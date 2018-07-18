@@ -5,14 +5,14 @@
 
 print("Enter your string")
 words= input()
-bb=[]
+final_string=[]
 str=""
 def reverse(words,str=""):
     if (len(words)==0):
-        bb.append(str)
+        final_string.append(str)
         return()
     if words[-1] == " ":
-        bb.append(str)
+        final_string.append(str)
         str=""
         reverse(words[:-1])
     else:
@@ -21,4 +21,4 @@ def reverse(words,str=""):
         reverse(words, str)
 
 reverse(words, str)
-print(" ".join(bb))
+print(" ".join(final_string))

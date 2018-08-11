@@ -56,8 +56,8 @@ for line in soup.find_all('p',attrs={"class" : "partial_entry"}):
         hotel_json["reviews"].append(review)
 
 
-with open("output.html", "wb") as file:
+with open(hotel_json["name"]+".html", "wb") as file:
     file.write(html)
 print("-------------------------------------------------")
-with open('data.json', 'w') as outfile:
+with open(hotel_json["name"]+".json", 'w') as outfile:
     json.dump(hotel_json, outfile, indent=4)

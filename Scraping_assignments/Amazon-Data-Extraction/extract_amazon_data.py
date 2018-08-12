@@ -30,35 +30,36 @@ for url in url_array:
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
-asin_array = [asin_array[0]]
-
-for i,asin in enumerate(asin_array):
-    url="https://www.amazon.com/dp/"+asin
-    print(url)
-    # html = urllib.request.urlopen(url, context=ctx).read()
-    # soup = BeautifulSoup(html, 'html.parser')
-    html = urllib.request.urlopen(url, context=ctx).read()
-    soup = BeautifulSoup(html, 'html.parser')
-
-    html = soup.prettify("utf-8")
- # <span class="a-size-medium a-color-price"
-# script data-a-state='{"key":"vas-common-vm"}'
-# script data-a-state='{"key":"turbo-checkout-page-state"}'
-# <div aria-expanded="false" class="a-expander-content a-expander-partial-collapse-content" data-hook="review-collapsed">
-# All BR TAGS UNDER THIS
-#   <span class="arp-rating-out-of-text" data-hook="rating-out-of-text">
-# 4.0 out of 5 stars
-# <span class="a-list-item a-color-tertiary">
-#<span class="a-size-base a-color-secondary header-price a-text-normal" id="usedPrice">
-
-    # for line in soup.find_all('span',attrs={"class" : "a-size-medium a-color-price"}):
-    #     print (line.text.strip())
-    # for line in soup.find_all('span',attrs={"id" : "productTitle"}):
-    #     print (line.text.strip())
-    # for line in soup.find_all('span',attrs={"class" : "a-list-item"}):
-    #     print (line.text.strip())
+asin = asin_array[0]
 
 
-
-    with open("output"+str(i)+".html", "wb") as file:
-        file.write(html)
+url="https://www.amazon.com/dp/"+asin
+# url = "https://www.amazon.com/gp/product/B07B7VFTN9/ref=s9_acss_bw_cg_PCLTMC_2c1_w?pf_rd_m=ATVPDKIKX0DER&pf_rd_s=merchandised-search-2&pf_rd_r=SSDYAYT34YR4C031K772&pf_rd_t=101&pf_rd_p=72bc8b37-11a2-462e-8b84-7e8ad1988c7f&pf_rd_i=565108"
+# print(url)
+hdr = {
+'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'}
+req = urllib.request.Request(url, headers=hdr)
+response = urllib.request.urlopen(req)
+html = response.read()
+soup = BeautifulSoup(html, 'html.parser')
+html = soup.prettify("utf-8")
+for line in soup.find_all('span',attrs={"class" : "a-size-medium a-color-price"}):
+    print (line.text.strip())
+print("--------------------------------------------------------------------------------------------------")
+for line in soup.find_all('script',attrs={"data-a-state" : '{"key":"vas-common-vm"}'}):
+    print (line.text.strip())
+print("--------------------------------------------------------------------------------------------------")
+for line in soup.find_all('script',attrs={"data-a-state" : '{"key":"turbo-checkout-page-state"}'}):
+    print (line.text.strip())
+print("--------------------------------------------------------------------------------------------------")
+for line in soup.find_all('span',attrs={"class" : "arp-rating-out-of-text"}):
+    print (line.text.strip())
+print("--------------------------------------------------------------------------------------------------")
+for line in soup.find_all('span',attrs={"class" : "a-list-item"}):
+    print (line.text.strip())
+print("--------------------------------------------------------------------------------------------------")
+for line in soup.find_all('span',attrs={"class" : "a-size-base a-color-secondary header-price a-text-normal"}):
+    print (line.text.strip())
+print("--------------------------------------------------------------------------------------------------")
+with open("output0.html", "wb") as file:
+    file.write(html)

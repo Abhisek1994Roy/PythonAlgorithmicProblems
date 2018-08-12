@@ -2,17 +2,13 @@ import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import ssl
 import json
-import unicodedata
 import re
 import sys
 import warnings
-import io
+
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
-TAG_RE = re.compile(r'<[^>]+>')
-def remove_tags(text):
-    return TAG_RE.sub('', text)
 
 #For ignoring SSL certificate errors
 ctx = ssl.create_default_context()
@@ -20,7 +16,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 # url = input('Enter url - ' )
-url = "https://www.tripadvisor.in/Hotel_Review-g1162480-d12081701-Reviews-WelcomHotel_Kences_Palm_Beach-Mahabalipuram_Kanchipuram_District_Tamil_Nadu.html"
+url=input("Enter Tripadvisor Hotel Url- ")
 html = urllib.request.urlopen(url, context=ctx).read()
 soup = BeautifulSoup(html, 'html.parser')
 
@@ -35,7 +31,6 @@ for line in soup.find_all('script',attrs={"type" : "application/ld+json"}):
     hotel_json["image"] = details["image"]
     details["priceRange"] = details["priceRange"].replace("₹ ","Rs ")
     details["priceRange"] = details["priceRange"].replace("₹","Rs ")
-    print(details["priceRange"])
     hotel_json["priceRange"] = details["priceRange"]
     hotel_json["aggregateRating"]={}
     hotel_json["aggregateRating"]["ratingValue"]=details["aggregateRating"]["ratingValue"]
@@ -63,7 +58,6 @@ for line in soup.find_all('p',attrs={"class" : "partial_entry"}):
 
 with open(hotel_json["name"]+".html", "wb") as file:
     file.write(html)
-print("-------------------------------------------------")
+
 with open(hotel_json["name"]+".json", 'w') as outfile:
     json.dump(hotel_json, outfile, indent=4)
-print(hotel_json)

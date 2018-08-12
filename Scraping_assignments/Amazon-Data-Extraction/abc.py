@@ -41,24 +41,11 @@ for i,asin in enumerate(asin_array):
     soup = BeautifulSoup(html, 'html.parser')
 
     html = soup.prettify("utf-8")
- # <span class="a-size-medium a-color-price"
-# script data-a-state='{"key":"vas-common-vm"}'
-# script data-a-state='{"key":"turbo-checkout-page-state"}'
-# <div aria-expanded="false" class="a-expander-content a-expander-partial-collapse-content" data-hook="review-collapsed">
-# All BR TAGS UNDER THIS
-#   <span class="arp-rating-out-of-text" data-hook="rating-out-of-text">
-# 4.0 out of 5 stars
-# <span class="a-list-item a-color-tertiary">
-#<span class="a-size-base a-color-secondary header-price a-text-normal" id="usedPrice">
-
     # for line in soup.find_all('span',attrs={"class" : "a-size-medium a-color-price"}):
     #     print (line.text.strip())
     # for line in soup.find_all('span',attrs={"id" : "productTitle"}):
     #     print (line.text.strip())
     # for line in soup.find_all('span',attrs={"class" : "a-list-item"}):
     #     print (line.text.strip())
-
-
-
     with open("output"+str(i)+".html", "wb") as file:
         file.write(html)

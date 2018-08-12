@@ -4,13 +4,15 @@ import ssl
 import json
 import unicodedata
 import re
-
+import sys
+import warnings
+import io
+if not sys.warnoptions:
+    warnings.simplefilter("ignore")
 
 TAG_RE = re.compile(r'<[^>]+>')
 def remove_tags(text):
     return TAG_RE.sub('', text)
-
-
 
 #For ignoring SSL certificate errors
 ctx = ssl.create_default_context()
@@ -31,6 +33,9 @@ for line in soup.find_all('script',attrs={"type" : "application/ld+json"}):
     hotel_json["name"] = details["name"]
     hotel_json["url"] = "https://www.tripadvisor.in"+details["url"]
     hotel_json["image"] = details["image"]
+    details["priceRange"] = details["priceRange"].replace("₹ ","Rs ")
+    details["priceRange"] = details["priceRange"].replace("₹","Rs ")
+    print(details["priceRange"])
     hotel_json["priceRange"] = details["priceRange"]
     hotel_json["aggregateRating"]={}
     hotel_json["aggregateRating"]["ratingValue"]=details["aggregateRating"]["ratingValue"]
@@ -61,3 +66,4 @@ with open(hotel_json["name"]+".html", "wb") as file:
 print("-------------------------------------------------")
 with open(hotel_json["name"]+".json", 'w') as outfile:
     json.dump(hotel_json, outfile, indent=4)
+print(hotel_json)

@@ -26,39 +26,48 @@ hotel_json = {}
 
 
 print("-------------------------------------------------------")
-for line in soup.find_all('span',attrs={"id" : "price_inside_buybox"}):
+for line in soup.findAll('span',attrs={"id" : "price_inside_buybox"}):
     details = line.text.strip()
     print(details)
 print("-------------------------------------------------------")
-for line in soup.find_all('span',attrs={"id" : "productTitle"}):
+for line in soup.findAll('span',attrs={"id" : "productTitle"}):
     details = line.text.strip()
     print(details)
 print("-------------------------------------------------------")
-# div_container = soup.findall("li")
-# for container in div_container:
-#     print(container.text.strip())
-#
-# >>> BeautifulSoup.BeautifulSoup("""<html><td width="50%">
-# ...     <strong class="sans"><a href="http:/website">Site</a></strong> <br />
-# ... </html>""" )
-# <html><td width="50%">
-# <strong class="sans"><a href="http:/website">Site</a></strong> <br />
-# </td></html>
 for item in soup.findAll('ul', attrs={'class':'a-unordered-list a-vertical a-spacing-none'}):
      for in_item in item.findAll('li'):
          for in_in_item in in_item.findAll('span', attrs={'class':'a-list-item'},text=True, recursive=False) :
              print(in_in_item.text.strip())
-# print([ span for span in li.findall("span", attrs={"class" : "a-list-item"})
-#             for li in ul.findall("li")
-#             for ul in soup.findall("ul", attrs={"class" : "a-unordered-list a-vertical a-spacing-none"})])
-# for line in soup.find_all('ul',attrs={"class" : "a-unordered-list a-vertical a-spacing-none"}):
-#     for inner_lines in soup.findChildren('li'):
-#         for inner_inner_lines in soup.findChildren('span',attrs={"class" : "a-list-item"}):
-#             print(inner_inner_lines.text.split())
-
-# for ptag in div_container.findall('span',attrs={"class" : "a-list-item"}):
-#     details = line.text.strip()
-#     print(details)
-# print(''.join(i.text.strip() for i in soup.select('ul[class="a-unordered-list a-vertical a-spacing-none"] > li > span[class="a-list-item"]')))
+print("-------------------------------------------------------")
+for line in soup.findAll('a',attrs={"class" : "a-size-base a-link-normal review-title a-color-base a-text-bold"}):
+    details = line.text.strip()
+    print(details)
+print("-------------------------------------------------------")
+for line in soup.findAll('div',attrs={"class" : "a-expander-content a-expander-partial-collapse-content"}):
+    details = line.text.strip()
+    print(details)
+print("-------------------------------------------------------")
+for item_new in soup.findAll('i', attrs={'data-hook':'average-star-rating'}):
+     for in_item_new in item_new.findAll('span', attrs={'class':'a-icon-alt'}):
+             print(in_item_new.text.strip())
+print("-------------------------------------------------------")
+for line in soup.findAll('span',attrs={"id" : "acrCustomerReviewText"}):
+    if (line.text):
+        details = line.text.strip()
+        print(details)
+        break
+print("-------------------------------------------------------")
+for item_new in soup.findAll('div', attrs={'id':'rwImages_hidden'}):
+     for in_item_new in item_new.findAll('img', attrs={'style':'display:none;'}):
+             print(in_item_new['src'])
+print("-------------------------------------------------------")
+# <div class="a-box-group" data-asin="B079J3NWYZ" data-brand="Lenovo" data-product-group="pc_display_on_website" data-timeout="Sorry we encountered a problem." id="mbc">
+for item_new in soup.findAll('div', attrs={'class':'a-box-group'}):
+    try:
+         print(item_new['data-brand'])
+         break
+    except:
+        pass
+print("--------------------------------------------------------")
 with open("output0.html", "wb") as file:
     file.write(html)

@@ -9,65 +9,89 @@ import warnings
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
+# url="https://www.amazon.com/dp/B0764LNTCZ/ref=sspa_dk_detail_1?psc=1&pd_rd_i=B0764LNTCZ&pd_rd_wg=A95e4&pd_rd_r=20M32TY3EWKRG51R7ANH&pd_rd_w=IShPp"
+# url = "https://www.amazon.com/dp/B07DNMHBRC/ref=sspa_dk_detail_2?psc=1&pd_rd_i=B07DNMHBRC&pd_rd_wg=70Lx2&pd_rd_r=30WME7MF7PT99664YZC9&pd_rd_w=Vf2js&smid=A12LTVP7KBAA4"
+# url = "https://www.amazon.com/dp/B077P1ZD2L/ref=sspa_dk_detail_2?psc=1&smid=A12LTVP7KBAA4"
+
 
 #For ignoring SSL certificate errors
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
-# url = input('Enter url - ' )
+
 url=input("Enter Amazon Product Url- ")
-# url="https://www.amazon.com/VivoBook-Lightweight-WideView-i5-8250U-Fingerprint/dp/B0795W86N3/ref=pd_sbs_147_3?_encoding=UTF8&pd_rd_i=B0795W86N3&pd_rd_r=8V90JTCPH5089W6PQ1R9&pd_rd_w=Ssao6&pd_rd_wg=kUHhj&psc=1&refRID=8V90JTCPH5089W6PQ1R9"
 html = urllib.request.urlopen(url, context=ctx).read()
 soup = BeautifulSoup(html, 'html.parser')
-
 html = soup.prettify("utf-8")
-hotel_json = {}
+product_json = {}
 
-
-print("-------------------------------------------------------")
-for line in soup.findAll('span',attrs={"id" : "price_inside_buybox"}):
-    details = line.text.strip()
-    print(details)
-print("-------------------------------------------------------")
-for line in soup.findAll('span',attrs={"id" : "productTitle"}):
-    details = line.text.strip()
-    print(details)
-print("-------------------------------------------------------")
-for item in soup.findAll('ul', attrs={'class':'a-unordered-list a-vertical a-spacing-none'}):
-     for in_item in item.findAll('li'):
-         for in_in_item in in_item.findAll('span', attrs={'class':'a-list-item'},text=True, recursive=False) :
-             print(in_in_item.text.strip())
-print("-------------------------------------------------------")
-for line in soup.findAll('a',attrs={"class" : "a-size-base a-link-normal review-title a-color-base a-text-bold"}):
-    details = line.text.strip()
-    print(details)
-print("-------------------------------------------------------")
-for line in soup.findAll('div',attrs={"class" : "a-expander-content a-expander-partial-collapse-content"}):
-    details = line.text.strip()
-    print(details)
-print("-------------------------------------------------------")
-for item_new in soup.findAll('i', attrs={'data-hook':'average-star-rating'}):
-     for in_item_new in item_new.findAll('span', attrs={'class':'a-icon-alt'}):
-             print(in_item_new.text.strip())
-print("-------------------------------------------------------")
-for line in soup.findAll('span',attrs={"id" : "acrCustomerReviewText"}):
-    if (line.text):
-        details = line.text.strip()
-        print(details)
-        break
-print("-------------------------------------------------------")
-for item_new in soup.findAll('div', attrs={'id':'rwImages_hidden'}):
-     for in_item_new in item_new.findAll('img', attrs={'style':'display:none;'}):
-             print(in_item_new['src'])
-print("-------------------------------------------------------")
-# <div class="a-box-group" data-asin="B079J3NWYZ" data-brand="Lenovo" data-product-group="pc_display_on_website" data-timeout="Sorry we encountered a problem." id="mbc">
-for item_new in soup.findAll('div', attrs={'class':'a-box-group'}):
+#This block of code will help extract the Brand of the item
+for divs in soup.findAll('div', attrs={'class':'a-box-group'}):
     try:
-         print(item_new['data-brand'])
-         break
+        product_json["brand"] = divs['data-brand']
+        break
     except:
         pass
-print("--------------------------------------------------------")
-with open("output0.html", "wb") as file:
+
+#This block of code will help extract the Prodcut Title of the item
+for spans in soup.findAll('span',attrs={"id" : "productTitle"}):
+    name_of_product = spans.text.strip()
+    product_json["name"] = name_of_product
+    break
+
+#This block of code will help extract the price of the item in dollars
+for divs in soup.findAll('div'):
+    try:
+        price = (str(divs['data-asin-price']))
+        product_json["price"] = "$"+price
+        break
+    except:
+        pass
+
+#This block of code will help extract the image of the item in dollars
+for divs in soup.findAll('div', attrs={'id':'rwImages_hidden'}):
+     for img_tag in divs.findAll('img', attrs={ 'style' : 'display:none;' }):
+         product_json["img-url"] = img_tag[ 'src' ]
+         break
+#This block of code will help extract the average star rating of the product
+for i_tags in soup.findAll('i', attrs={'data-hook':'average-star-rating'}):
+     for spans in i_tags.findAll('span', attrs={'class':'a-icon-alt'}):
+         product_json["star-rating"] = spans.text.strip()
+         break
+
+#This block of code will help extract the number of customer reviews of the product
+for spans in soup.findAll('span',attrs={"id" : "acrCustomerReviewText"}):
+    if (spans.text):
+        review_count = spans.text.strip()
+        product_json["cusomter-reviews-count"] = review_count
+        break
+
+#This block of code will help extract top specifications and details of the product
+product_json["details"]=[]
+for ul_tags in soup.findAll('ul', attrs={'class':'a-unordered-list a-vertical a-spacing-none'}):
+     for li_tags in ul_tags.findAll('li'):
+         for spans in li_tags.findAll('span', attrs={'class':'a-list-item'},text=True, recursive=False) :
+             product_json["details"].append(spans.text.strip())
+
+#This block of code will help extract the short reviews of the product
+product_json["short-reviews"]=[]
+for a_tags in soup.findAll('a',attrs={"class" : "a-size-base a-link-normal review-title a-color-base a-text-bold"}):
+    short_review = a_tags.text.strip()
+    product_json["short-reviews"].append(short_review)
+
+#This block of code will help extract the long reviews of the product
+product_json["long-reviews"] = []
+for divs in soup.findAll('div',attrs={"data-hook" : "review-collapsed"}):
+    long_review = divs.text.strip()
+    product_json["long-reviews"].append(long_review)
+
+
+#Saving the scraped html file
+with open("output_file.html", "wb") as file:
     file.write(html)
+
+#Saving the scraped data in json format
+with open("product.json", 'w') as outfile:
+    json.dump(product_json, outfile, indent=4)
+print("----------Extraction of data is complete. Check json file.----------")

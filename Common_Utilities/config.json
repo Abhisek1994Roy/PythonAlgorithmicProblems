@@ -1,0 +1,9 @@
+[{
+  "Media": "Music",
+  "Types": ["aac","mp3","wma","wav", "flac","mp3","mpc"]
+},
+{
+  "Media": "Video",
+  "Types": ["3gp","mp4","webm","mkv","flv","gif","avi","wmv","amv","m4v","mpeg","svi"]
+}
+]

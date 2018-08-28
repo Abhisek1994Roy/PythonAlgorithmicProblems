@@ -1,9 +1,64 @@
-[{
-  "Media": "Music",
-  "Types": ["aac","mp3","wma","wav", "flac","mp3","mpc"]
-},
-{
-  "Media": "Video",
-  "Types": ["3gp","mp4","webm","mkv","flv","gif","avi","wmv","amv","m4v","mpeg","svi"]
-}
+[
+  {
+    "Media": "Music",
+    "Types": [
+      "aac",
+      "mp3",
+      "wma",
+      "wav",
+      "flac",
+      "mp3",
+      "mpc"
+    ]
+  },
+  {
+    "Media": "Video",
+    "Types": [
+      "3gp",
+      "mp4",
+      "webm",
+      "mkv",
+      "flv",
+      "gif",
+      "avi",
+      "wmv",
+      "amv",
+      "m4v",
+      "mpeg",
+      "svi"
+    ]
+  },
+  {
+    "Media": "Images",
+    "Types": [
+      "tif",
+      "tiff",
+      "gif",
+      "jpeg",
+      "jpg",
+      "jif",
+      "jfif",
+      "jp2",
+      "jpx",
+      "j2k",
+      "j2c",
+      "png"
+    ]
+  },
+  {
+    "Media": "Documents",
+    "Types": [
+      "pdf",
+      "doc",
+      "docx",
+      "xls",
+      "xlsx",
+      "html",
+      "dot",
+      "wbk",
+      "xlsx",
+      "xlsm",
+      "ppt"
+    ]
+  }
 ]

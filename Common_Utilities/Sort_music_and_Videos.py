@@ -29,17 +29,20 @@ def get_root(extension_arr):
             # print(len(path) * '--', os.path.abspath(file))
             print(os.path.abspath(file))
 
-with open('config.json') as extension_types:
-    extension_arr = json.load(extension_types)
-choice=999
-while choice!=1 and choice!=2:
-    choice = int(input("Enter 1 to show config, or 2 to get root."))
-    if choice!=1 and choice!=2:
-        print("Wrong option selected. Try again")
 
-if choice == 1:
-    show_config(extension_arr)
-elif choice == 2:
-    get_root(extension_arr)
-# elif choice == 3:
-#     os.mkdir(path)
+
+def main():
+    with open('config.json') as extension_types:
+        extension_arr = json.load(extension_types)
+    choice=999
+    while choice!=1 and choice!=2:
+        choice = int(input("Enter 1 to show config, or 2 to get root."))
+        if choice!=1 and choice!=2:
+            print("Wrong option selected. Try again")
+    if choice == 1:
+        show_config(extension_arr)
+    elif choice == 2:
+        get_root(extension_arr)
+
+if __name__ == "__main__":
+    main()

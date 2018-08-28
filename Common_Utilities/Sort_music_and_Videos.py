@@ -1,11 +1,6 @@
 import json
 import os
 import sys
-# print(extension_arr)
-
-
-
-
 
 def show_config(extension_arr):
     for row in extension_arr:
@@ -13,14 +8,26 @@ def show_config(extension_arr):
             print(key,"--->",value)
         print("-------------------------------------------")
 
-def get_root():
+def get_root(extension_arr):
     root_folder = input("Enter root folder or drive:-  ")
+    # print(os.path.abspath(root_folder))
+    root_path = os.path.abspath(root_folder)
+    for media_types in  extension_arr:
+        new_folder = root_path+os.sep+media_types["Media"]
+        print(new_folder)
+        if not os.path.exists(new_folder):
+            os.makedirs(new_folder)
+
     for root, dirs, files in os.walk(root_folder):
-        path = root.split(os.sep)
-        # print((len(path) - 1) * '--', os.path.basename(root))
-        print((len(path) - 1) * '--', os.path.abspath(root))
+        # print(os.sep)
+        # path = root.split(os.sep)
+        # print(path)
+        # Uncomment line below this to print the folders
+        # print((len(path) - 1) * '--', os.path.abspath(root))
         for file in files:
-            print(len(path) * '--', os.path.abspath(file))
+            # Uncomment line below to print files
+            # print(len(path) * '--', os.path.abspath(file))
+            print(os.path.abspath(file))
 
 with open('config.json') as extension_types:
     extension_arr = json.load(extension_types)
@@ -33,6 +40,6 @@ while choice!=1 and choice!=2:
 if choice == 1:
     show_config(extension_arr)
 elif choice == 2:
-    get_root()
+    get_root(extension_arr)
 # elif choice == 3:
 #     os.mkdir(path)

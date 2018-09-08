@@ -27,7 +27,8 @@ def get_root(extension_arr):
         for file in files:
             # Uncomment line below to print files
             # print(len(path) * '--', os.path.abspath(file))
-            print(os.path.abspath(file))
+            # print(os.path.abspath(file))
+            pass
 
 
 

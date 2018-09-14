@@ -19,7 +19,7 @@ ctx.verify_mode = ssl.CERT_NONE
 
 # Input from user
 
-url = input('Enter Trulia Product Url- ')
+url = input('Enter Trulia Property Listing Url- ')
 
 # Making the website believe that you are accessing it using a mozilla browser
 

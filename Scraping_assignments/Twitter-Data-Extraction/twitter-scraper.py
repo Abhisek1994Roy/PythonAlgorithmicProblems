@@ -1,63 +1,77 @@
-#!/usr/bin/env python
-# encoding: utf-8
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-import tweepy #https://github.com/tweepy/tweepy
+import tweepy
 import csv
+import json
 
-#Twitter API credentials
-consumer_key = ""
-consumer_secret = ""
-access_key = ""
-access_secret = ""
+# load Twitter API credentials
+
+with open('twitter_credentials.json') as cred_data:
+    info = json.load(cred_data)
+    consumer_key = info['CONSUMER_KEY']
+    consumer_secret = info['CONSUMER_SECRET']
+    access_key = info['ACCESS_KEY']
+    access_secret = info['ACCESS_SECRET']
 
 
 def get_all_tweets(screen_name):
-    #Twitter only allows access to a users most recent 3240 tweets with this method
 
-    #authorize twitter, initialize tweepy
+    # Twitter allows access to only 3240 tweets via this method
+
+    # Authotization and initialization
+
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
 
-    #initialize a list to hold all the tweepy Tweets
-    alltweets = []
+    # initialization of a list to hold all Tweets
 
-    #make initial request for most recent tweets (200 is the maximum allowed count)
-    new_tweets = api.user_timeline(screen_name = screen_name,count=200)
+    all_the_tweets = []
 
-    #save most recent tweets
-    alltweets.extend(new_tweets)
+    # We will get the tweets with multiple requests of 200 tweets each
 
-    #save the id of the oldest tweet less one
-    oldest = alltweets[-1].id - 1
+    new_tweets = api.user_timeline(screen_name=screen_name, count=200)
 
-    #keep grabbing tweets until there are no tweets left to grab
+    # saving the most recent tweets
+
+    all_the_tweets.extend(new_tweets)
+
+    # save id of 1 less than the oldest tweet
+
+    oldest_tweet = all_the_tweets[-1].id - 1
+
+    # grabbing tweets till none are left
+
     while len(new_tweets) > 0:
-        print ("getting tweets before %s" % (oldest))
+        # The max_id param will be used subsequently to prevent duplicates
+        new_tweets = api.user_timeline(screen_name=screen_name,
+                count=200, max_id=oldest_tweet)
 
-        #all subsiquent requests use the max_id param to prevent duplicates
-        new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=oldest)
+        # save most recent tweets
 
-        #save most recent tweets
-        alltweets.extend(new_tweets)
+        all_the_tweets.extend(new_tweets)
 
-        #update the id of the oldest tweet less one
-        oldest = alltweets[-1].id - 1
+        # id is updated to oldest tweet - 1 to keep track
 
-        print ("...%s tweets downloaded so far" % (len(alltweets)))
+        oldest_tweet = all_the_tweets[-1].id - 1
+        print ('...%s tweets have been downloaded so far' % len(all_the_tweets))
 
-    #transform the tweepy tweets into a 2D array that will populate the csv
-    outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for tweet in alltweets]
+    # transforming the tweets into a 2D array that will be used to populate the csv
 
-    #write the csv
-    with open('%s_tweets.csv' % screen_name, 'wb') as f:
+    outtweets = [[tweet.id_str, tweet.created_at,
+                 tweet.text.encode('utf-8')] for tweet in all_the_tweets]
+
+    # writing to the csv file
+
+    with open(screen_name + '_tweets.csv', 'w', encoding='utf8') as f:
         writer = csv.writer(f)
-        writer.writerow(["id","created_at","text"])
+        writer.writerow(['id', 'created_at', 'text'])
         writer.writerows(outtweets)
-
-    pass
 
 
 if __name__ == '__main__':
-    #pass in the username of the account you want to download
-    get_all_tweets("J_tsar")
+
+    # Enter the twitter handle of the person concerned
+
+    get_all_tweets(input("Enter the twitter handle of the person whose tweets you want to download:- "))

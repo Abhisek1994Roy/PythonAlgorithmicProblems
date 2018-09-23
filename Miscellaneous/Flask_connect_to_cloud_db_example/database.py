@@ -68,6 +68,13 @@ def delete_one():
         return str("Insufficient data entered for deletion")
     conn = mysql.connect()
     cur = conn.cursor()
+    sql = "SELECT COUNT(*) from example where id = %s"
+    val = (id)
+    count = cur.execute(sql, val)
+    count_var = cur.fetchone()[0]
+    if count_var == 0:
+        return str("No entry available for the particular id")
+
     sql = "DELETE FROM example WHERE id= %s "
     val = (id)
     cur.execute(sql, val)

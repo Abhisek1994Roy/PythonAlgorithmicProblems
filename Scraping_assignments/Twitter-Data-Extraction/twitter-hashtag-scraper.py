@@ -3,7 +3,6 @@
 
 import tweepy
 import csv
-import pandas as pd
 import json
 
 # Twitter API credentials

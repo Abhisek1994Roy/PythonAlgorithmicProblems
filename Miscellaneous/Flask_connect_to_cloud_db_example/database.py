@@ -85,9 +85,16 @@ def update_one():
         username = data["username"]
         password = data["password"]
     except:
-        return str("Insufficient data entered for updating db entry")    
+        return str("Insufficient data entered for updating db entry")
+
     conn = mysql.connect()
     cur = conn.cursor()
+    sql = "SELECT COUNT(*) from example where id = %s"
+    val = (id)
+    count = cur.execute(sql, val)
+    count_var = cur.fetchone()[0]
+    if count_var == 0:
+        return str("No entry available for the particular id")
     sql = "UPDATE example SET username = %s, password = %s  WHERE id = %s;"
     val = (username,password,id)
     cur.execute(sql, val)

@@ -55,6 +55,20 @@ def delete_one():
     return str("DELETED ROW, WHERE ID = "+str(id))
 
 
+@app.route('/update/', methods=['PUT'])
+def update_one():
+    data = request.get_json()
+    id = data["id"]
+    text = data["text"]
+    conn = mysql.connect()
+    cur = conn.cursor()
+    sql = "UPDATE example SET data = %s WHERE id = %s;"
+    val = (text,id)
+    cur.execute(sql, val)
+    conn.commit()
+    return str("UPDATED ID "+str(id)+" WITH DATA- "+str(text))
+
+
 
 
 if __name__ == '__main__':

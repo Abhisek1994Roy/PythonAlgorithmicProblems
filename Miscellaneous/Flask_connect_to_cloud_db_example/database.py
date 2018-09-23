@@ -40,7 +40,22 @@ def insert_one():
     val = (id, text)
     cur.execute(sql, val)
     conn.commit()
-    return str("INSERTED NEW ROW")
+    return str("INSERTED NEW ROW AT ID = "+str(id))
+
+@app.route('/delete/', methods=['DELETE'])
+def delete_one():
+    data = request.get_json()
+    id = data["id"]
+    conn = mysql.connect()
+    cur = conn.cursor()
+    sql = "DELETE FROM example WHERE id= %s "
+    val = (id)
+    cur.execute(sql, val)
+    conn.commit()
+    return str("DELETED ROW, WHERE ID = "+str(id))
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

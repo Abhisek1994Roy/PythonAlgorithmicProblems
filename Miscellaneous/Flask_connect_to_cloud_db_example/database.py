@@ -44,8 +44,11 @@ def show_all():
 def insert_one():
     app.logger.info(time.strftime('%X %x %Z')+': User is inserting new data')
     data = request.get_json()
-    username = data["username"]
-    password = data["password"]
+    try:
+        username = data["username"]
+        password = data["password"]
+    except:
+        return str("Insufficient data entered for insertion into DB")
     conn = mysql.connect()
     cur = conn.cursor()
     sql = "INSERT INTO example (username, password) VALUES (%s, %s)"
@@ -59,7 +62,10 @@ def insert_one():
 def delete_one():
     app.logger.info(time.strftime('%X %x %Z')+': User is deleting an entry')
     data = request.get_json()
-    id = data["id"]
+    try:
+        id = data["id"]
+    except:
+        return str("Insufficient data entered for deletion")
     conn = mysql.connect()
     cur = conn.cursor()
     sql = "DELETE FROM example WHERE id= %s "
@@ -74,9 +80,12 @@ def delete_one():
 def update_one():
     app.logger.info(time.strftime('%X %x %Z')+': User is updating an entry')
     data = request.get_json()
-    id = data["id"]
-    username = data["username"]
-    password = data["password"]
+    try:
+        id = data["id"]
+        username = data["username"]
+        password = data["password"]
+    except:
+        return str("Insufficient data entered for updating db entry")    
     conn = mysql.connect()
     cur = conn.cursor()
     sql = "UPDATE example SET username = %s, password = %s  WHERE id = %s;"
@@ -87,7 +96,7 @@ def update_one():
 
 #Running the flask app using main call
 if __name__ == '__main__':
-    handler = RotatingFileHandler('foo.log', maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler('logging_file.log', maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
     app.run(debug=True)

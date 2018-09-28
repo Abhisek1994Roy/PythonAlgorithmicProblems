@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-
+import shutil
 def show_config(extension_arr):
     for row in extension_arr:
         for key, value in row.items():
@@ -10,26 +10,20 @@ def show_config(extension_arr):
 
 def get_root(extension_arr):
     root_folder = input("Enter root folder or drive:-  ")
-    # print(os.path.abspath(root_folder))
     root_path = os.path.abspath(root_folder)
-    for media_types in  extension_arr:
-        new_folder = root_path+os.sep+media_types["Media"]
+    for media_types in extension_arr:
+        new_folder = root_path + os.sep+media_types["Media"]
         print(new_folder)
         if not os.path.exists(new_folder):
             os.makedirs(new_folder)
-
     for root, dirs, files in os.walk(root_folder):
-        # print(os.sep)
-        # path = root.split(os.sep)
-        # print(path)
-        # Uncomment line below this to print the folders
-        # print((len(path) - 1) * '--', os.path.abspath(root))
         for file in files:
-            # Uncomment line below to print files
-            # print(len(path) * '--', os.path.abspath(file))
-            # print(os.path.abspath(file))
-            pass
-
+            extension = file.split(".")[-1]
+            for media_types in extension_arr:
+                extension_types = media_types["Types"]
+                if extension in extension_types:
+                    media_folder = root_path + os.sep+media_types["Media"]
+                    shutil.move(file,media_folder)
 
 
 def main():

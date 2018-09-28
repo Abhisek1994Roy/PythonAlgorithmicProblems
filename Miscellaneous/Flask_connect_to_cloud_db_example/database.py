@@ -39,6 +39,22 @@ def show_all():
         all_data[row[0]]=[row[1], row[2]]
     return str(all_data)
 
+@app.route('/reset/', methods=['PUT'])
+def reset():
+    data = request.get_json()
+    reset_status = data["reset_status"]
+    app.logger.info(time.strftime('%X %x %Z')+': User is resetting data')
+    if reset_status == "Yes":
+        conn = mysql.connect()
+        cur = conn.cursor()
+        cur.execute("""DROP TABLE example""")
+        cur.execute(""" CREATE TABLE example ( id int(11) NOT NULL AUTO_INCREMENT, username varchar(50) NOT NULL, password varchar(50) NOT NULL, PRIMARY KEY (`id`) )""")
+        conn.commit()
+        return ("Table Reset Complete")
+    return("Unable to reset table")
+
+
+
 #Insert Single Entry page using POST method page
 @app.route('/insert/', methods=['POST'])
 def insert_one():

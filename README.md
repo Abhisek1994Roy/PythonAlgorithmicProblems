@@ -1,3 +1,3 @@
 # Python_Algorithmic_Problems
 
-##A repostitory of Python Programs
+A repostitory of Python Programs

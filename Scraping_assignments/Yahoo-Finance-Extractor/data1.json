@@ -1,0 +1,22 @@
+{
+    "PRESENT_VALUE": "198.87",
+    "PRESENT_GROWTH": "-0.08 (-0.04%)",
+    "OTHER_DETAILS": {
+        "PREV_CLOSE": "198.95",
+        "OPEN": "199.20",
+        "BID": "198.91 x 800",
+        "ASK": "198.99 x 1000",
+        "TD_VOLUME": "27,760,668",
+        "AVERAGE_VOLUME_3MONTH": "28,641,896",
+        "MARKET_CAP": "937.728B",
+        "BETA_3Y": "0.91",
+        "PE_RATIO": "16.41",
+        "EPS_RATIO": "12.12",
+        "EARNINGS_DATE": [
+            "30 Apr 2019"
+        ],
+        "DIVIDEND_AND_YIELD": "2.92 (1.50%)",
+        "EX_DIVIDEND_DATE": "2019-02-08",
+        "ONE_YEAR_TARGET_PRICE": "193.12"
+    }
+}

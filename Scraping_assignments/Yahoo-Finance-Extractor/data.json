@@ -1,22 +1,20 @@
 {
-    "PRESENT_VALUE": "197.00",
     "PRESENT_GROWTH": "+1.31 (+0.67%)",
-    "OTHER_DETAILS": {
-        "PREV_CLOSE": "195.69",
-        "OPEN": "196.45",
-        "BID": "196.89 x 900",
-        "ASK": "197.00 x 1400",
-        "TD_VOLUME": "18,526,644",
-        "AVERAGE_VOLUME_3MONTH": "29,962,082",
-        "MARKET_CAP": "928.91B",
-        "BETA_3Y": "0.91",
-        "PE_RATIO": "16.25",
-        "EPS_RATIO": "12.12",
-        "EARNINGS_DATE": [
-            "Apr 30, 2019"
-        ],
-        "DIVIDEND_AND_YIELD": "2.92 (1.50%)",
-        "EX_DIVIDEND_DATE": "2019-02-08",
-        "NE_YEAR_TARGET_PRICE": "190.94"
-    }
+    "PRESENT_VALUE": "197.00",
+    "PREV_CLOSE": "195.69",
+    "OPEN": "196.45",
+    "BID": "196.89 x 900",
+    "ASK": "197.00 x 1400",
+    "TD_VOLUME": "18,526,644",
+    "AVERAGE_VOLUME_3MONTH": "29,962,082",
+    "MARKET_CAP": "928.91B",
+    "BETA_3Y": "0.91",
+    "PE_RATIO": "16.25",
+    "EPS_RATIO": "12.12",
+    "EARNINGS_DATE": [
+        "Apr 30, 2019"
+    ],
+    "DIVIDEND_AND_YIELD": "2.92 (1.50%)",
+    "EX_DIVIDEND_DATE": "2019-02-08",
+    "NE_YEAR_TARGET_PRICE": "190.94"
 }

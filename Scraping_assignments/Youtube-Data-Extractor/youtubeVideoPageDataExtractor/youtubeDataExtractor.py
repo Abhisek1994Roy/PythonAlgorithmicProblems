@@ -31,38 +31,38 @@ webpage = urlopen(req).read()
 
 soup = BeautifulSoup(webpage, 'html.parser')
 html = soup.prettify('utf-8')
-company_json = {}
+video_details = {}
 other_details = {}
 
 for span in soup.findAll('span',attrs={'class': 'watch-title'}):
-    company_json['TITLE'] = span.text.strip()
+    video_details['TITLE'] = span.text.strip()
 
 for script in soup.findAll('script',attrs={'type': 'application/ld+json'}):
         channelDesctiption = json.loads(script.text.strip())
-        company_json['CHANNEL_NAME'] = channelDesctiption['itemListElement'][0]['item']['name']
+        video_details['CHANNEL_NAME'] = channelDesctiption['itemListElement'][0]['item']['name']
 
 for div in soup.findAll('div',attrs={'class': 'watch-view-count'}):
-    company_json['NUMBER_OF_VIEWS'] = div.text.strip()
+    video_details['NUMBER_OF_VIEWS'] = div.text.strip()
 
 for button in soup.findAll('button',attrs={'title': 'I like this'}):
-    company_json['LIKES'] = button.text.strip()
+    video_details['LIKES'] = button.text.strip()
 
 for button in soup.findAll('button',attrs={'title': 'I dislike this'}):
-    company_json['DISLIKES'] = button.text.strip()
+    video_details['DISLIKES'] = button.text.strip()
 
 for span in soup.findAll('span',attrs={'class': 'yt-subscription-button-subscriber-count-branded-horizontal yt-subscriber-count'}):
-    company_json['NUMBER_OF_SUBSCRIPTIONS'] = span.text.strip()
+    video_details['NUMBER_OF_SUBSCRIPTIONS'] = span.text.strip()
 
 hashtags = []
 for span in soup.findAll('span',attrs={'class': 'standalone-collection-badge-renderer-text'}):
     for a in span.findAll('a',attrs={'class': 'yt-uix-sessionlink'}):
         hashtags.append(a.text.strip())
-company_json['HASH_TAGS'] = hashtags
+video_details['HASH_TAGS'] = hashtags
 
 with open('output_file.html', 'wb') as file:
     file.write(html)
 
 with open('data.json', 'w', encoding='utf8') as outfile:
-    json.dump(company_json, outfile, ensure_ascii=False,indent=4)
+    json.dump(video_details, outfile, ensure_ascii=False,indent=4)
 
 print ('----------Extraction of data is complete. Check json file.----------')

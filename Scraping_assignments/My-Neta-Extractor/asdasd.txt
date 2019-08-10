@@ -1,0 +1,5 @@
+table tr td.chartcell
+
+body #main .container_12 h3.title
+
+body #main .container_12 table tr td.chartcell

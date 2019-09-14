@@ -31,44 +31,39 @@ webpage = urlopen(req).read()
 soup = BeautifulSoup(webpage, 'html.parser')
 html = soup.prettify('utf-8')
 property_json = {}
-property_json["Details_Broad"] = {}
-property_json["Address"] = {}
+property_json['Details_Broad'] = {}
+property_json['Address'] = {}
 
+# Extract Title of the zillow property listing
 
-#Extract Title of the zillow property listing
 for title in soup.findAll('title'):
-  property_json["Title"] = title.text.strip()
-  break
+    property_json['Title'] = title.text.strip()
+    break
 
-for meta in soup.findAll('meta', attrs = {'name': 'description'}):
-      property_json["Detail_Short"] = meta["content"].strip()
+for meta in soup.findAll('meta', attrs={'name': 'description'}):
+    property_json['Detail_Short'] = meta['content'].strip()
 
-for div in soup.findAll('div', attrs = {'class': 'character-count-truncated'}):
-      property_json["Details_Broad"]["Description"] = div.text.strip()
+for div in soup.findAll('div', attrs={'class': 'character-count-truncated'}):
+    property_json['Details_Broad']['Description'] = div.text.strip()
 
-for i,script in enumerate(soup.findAll('script', attrs = {'type': 'application/ld+json'})):
-    if i==0:
-        json_data=json.loads(script.text)
-        property_json["Details_Broad"]["Number of Rooms"] = json_data["numberOfRooms"]
-        property_json["Details_Broad"]["Floor Size (in sqft)"] = json_data["floorSize"]["value"]
-        property_json["Address"]["Street"] = json_data["address"]["streetAddress"]
-        property_json["Address"]["Locality"] = json_data["address"]["addressLocality"]
-        property_json["Address"]["Region"] = json_data["address"]["addressRegion"]
-        property_json["Address"]["Postal Code"] = json_data["address"]["postalCode"]
-    if i==1:
-        json_data=json.loads(script.text)
-        property_json["Price in $"] = json_data["offers"]["price"]
-        property_json["Image"] = json_data["image"]
+for (i, script) in enumerate(soup.findAll('script',
+                             attrs={'type': 'application/ld+json'})):
+    if i == 0:
+        json_data = json.loads(script.text)
+        property_json['Details_Broad']['Number of Rooms'] = json_data['numberOfRooms']
+        property_json['Details_Broad']['Floor Size (in sqft)'] = json_data['floorSize']['value']
+        property_json['Address']['Street'] = json_data['address']['streetAddress']
+        property_json['Address']['Locality'] = json_data['address']['addressLocality']
+        property_json['Address']['Region'] = json_data['address']['addressRegion']
+        property_json['Address']['Postal Code'] = json_data['address']['postalCode']
+    if i == 1:
+        json_data = json.loads(script.text)
+        property_json['Price in $'] = json_data['offers']['price']
+        property_json['Image'] = json_data['image']
         break
 
-
-
-
-
-with open('data2.json', 'w') as outfile:
+with open('data.json', 'w') as outfile:
     json.dump(property_json, outfile, indent=4)
-
-# print (company_json)
 
 with open('output_file.html', 'wb') as file:
     file.write(html)

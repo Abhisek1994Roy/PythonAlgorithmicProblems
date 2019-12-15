@@ -19,7 +19,7 @@ def main():
     # number_of_pages = input('Enter the number of web pages of search results that you want to scrape for provided keywords- ')
     name_of_city = "New York"
     keywords = "Data Science"
-    number_of_pages = "3"
+    number_of_pages = "1"
     name_of_city = '+'.join(name_of_city.split(' '))
     keywords = '+'.join(keywords.split(' '))
     url_to_scrape = BASE_URL + "/jobs?q=" + keywords + "&l=" + name_of_city
@@ -49,10 +49,7 @@ def scrape_data(url_to_scrape, number_of_pages_nos):
 
 
 def get_data_from_webpage(data_collected, soup):
-    single_job_post_extension = "&vjk="
-    print("Scraping data from web page-")
     job_posts = []
-    # <div class="jobsearch-SerpJobCard unifiedRow row result" data-jk="918213ce5d43f350" data-tn-component="organicJob" id="p_918213ce5d43f350">
     for div in soup.findAll('div', attrs={'class': 'jobsearch-SerpJobCard unifiedRow row result'}):
         job = dict()
         for a in div.findAll('a', attrs={'class': 'jobtitle turnstileLink'}):
@@ -74,13 +71,12 @@ def get_data_from_webpage(data_collected, soup):
         web_page = urlopen(req).read()
         job_soup = BeautifulSoup(web_page, 'html.parser')
         html = job_soup.prettify('utf-8')
-        name_of_html_file = "indeed" + ":" + single_job_post_extension_url.split('//')[-1]
+        name_of_html_file = ("indeed" + ":" + single_job_post_extension_url.split('//')[-1]).split('/')[-1]
         with open(name_of_html_file + '.html', 'wb') as file:
             file.write(html)
         file.close()
-        # Extract company, rating, location, data, date
         for inside_div in job_soup.findAll('div', attrs={'class': 'jobsearch-jobDescriptionText'}):
-            job['details'] = inside_div.text.strip()
+            job['details'] = inside_div.text.strip()[:100]+"..."
         data_collected.append(job)
     return data_collected;
 

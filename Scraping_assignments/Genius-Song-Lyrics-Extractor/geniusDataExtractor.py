@@ -1,18 +1,13 @@
 #!/usr/bin/python
-#- * -coding: utf - 8 - * -
-
-import urllib.request
-import urllib.parse
-import urllib.error
 from bs4 import BeautifulSoup
 import ssl
 import json
-import ast
-import os
+
 from urllib.request import Request, urlopen
 
-# For ignoring SSL certificate errors
 
+
+# For ignoring SSL certificate errors
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE

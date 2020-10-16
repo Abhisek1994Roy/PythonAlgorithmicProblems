@@ -1,27 +1,27 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import requests
-import urllib.request
-import urllib.parse
-import urllib.error
-from bs4 import BeautifulSoup
-import ssl
 import json
+import ssl
+import urllib.error
+import urllib.parse
+import urllib.request
+
+from bs4 import BeautifulSoup
 
 
-class Insta_Image_Links_Scraper:
+class InstaImageLinksScraper:
 
     def getlinks(self, hashtag, url):
 
         html = urllib.request.urlopen(url, context=self.ctx).read()
         soup = BeautifulSoup(html, 'html.parser')
         script = soup.find('script', text=lambda t: \
-                           t.startswith('window._sharedData'))
+            t.startswith('window._sharedData'))
         page_json = script.text.split(' = ', 1)[1].rstrip(';')
         data = json.loads(page_json)
-        print ('Scraping links with #' + hashtag+"...........")
+        print('Scraping links with #' + hashtag + "...........")
         for post in data['entry_data']['TagPage'][0]['graphql'
-                ]['hashtag']['edge_hashtag_to_media']['edges']:
+        ]['hashtag']['edge_hashtag_to_media']['edges']:
             image_src = post['node']['thumbnail_resources'][1]['src']
             hs = open(hashtag + '.txt', 'a')
             hs.write(image_src + '\n')
@@ -42,5 +42,5 @@ class Insta_Image_Links_Scraper:
 
 
 if __name__ == '__main__':
-    obj = Insta_Image_Links_Scraper()
+    obj = InstaImageLinksScraper()
     obj.main()

@@ -9,6 +9,7 @@ client_credentials_manager = SpotifyClientCredentials(client_id, client_secret)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
+# Function to extract all the trackids from your playlist
 def get_track_ids(playlist_id):
     music_id_list = []
     playlist = sp.playlist(playlist_id)
@@ -18,6 +19,7 @@ def get_track_ids(playlist_id):
     return music_id_list
 
 
+# Function to extract all the details of each track by passing its id
 def get_track_data(track_id):
     meta = sp.track(track_id)
     track_details = {"name": meta['name'], "album": meta['album']['name'],
@@ -28,7 +30,10 @@ def get_track_data(track_id):
 
 
 # Get the ids for all the songs in your playlist
-track_ids = input('Enter the playlist id')
+playlist_id = input('Enter the playlist id')
+track_ids = get_track_ids(playlist_id)
+print(len(track_ids))
+print(track_ids)
 # track_ids = get_track_ids('7MXI9ecivGngCDv2IH05ne')
 
 # loop over track ids and get their data points

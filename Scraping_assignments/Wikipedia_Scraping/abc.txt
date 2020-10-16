@@ -1,0 +1,1 @@
+['Guido van Rossum', 'Python (programming language)', 'IDLE', 'History of Python', 'Van Rossum', 'Benevolent dictator for life', 'Rietveld (software)', 'ABC (programming language)', 'Zen of Python', 'Van (Dutch)']

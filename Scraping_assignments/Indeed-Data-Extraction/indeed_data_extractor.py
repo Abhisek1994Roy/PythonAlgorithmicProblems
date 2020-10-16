@@ -47,11 +47,6 @@ def scrape_data(url_to_scrape, number_of_pages_nos):
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         web_page = urlopen(req).read()
         soup = BeautifulSoup(web_page, 'html.parser')
-        html = soup.prettify('utf-8')
-        name_of_html_file = "indeed" + ":" + url.split('//')[-1]
-        with open(name_of_html_file + '.html', 'wb') as file:
-            file.write(html)
-        file.close()
         data_collected = get_data_from_webpage(data_collected, soup)
     return data_collected
 
@@ -92,11 +87,7 @@ def get_data_from_webpage(data_collected, soup):
         req = Request(single_job_post_extension_url, headers={'User-Agent': 'Mozilla/5.0'})
         web_page = urlopen(req).read()
         job_soup = BeautifulSoup(web_page, 'html.parser')
-        html = job_soup.prettify('utf-8')
-        name_of_html_file = ("indeed" + ":" + single_job_post_extension_url.split('//')[-1]).split('/')[-1]
-        with open(name_of_html_file + '.html', 'wb') as file:
-            file.write(html)
-        file.close()
+
         for inside_div in job_soup.findAll('div', attrs={'class': 'jobsearch-jobDescriptionText'}):
             details = inside_div.text.strip()[:100] + "..."
             job['details'] = re.sub(' +', ' ', details.replace("\n", " "))

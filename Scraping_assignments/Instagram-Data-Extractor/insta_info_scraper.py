@@ -14,7 +14,6 @@ class InstaInfoScraper:
     def getinfo(self, url):
         # Make a http call to the given url to get the HTML page
         html = urllib.request.urlopen(url, context=self.ctx).read()
-        user_data = {}
 
         # Create a beautifulSoup object of the html page
         soup = BeautifulSoup(html, 'html.parser')
@@ -27,15 +26,18 @@ class InstaInfoScraper:
         script_data = soup.find_all('script', attrs={'type': 'application/ld+json'})
         script_data = (json.loads(script_data[0].text))
 
+        # Extract user image
+        image_data = soup.find_all('meta', attrs={'property': 'og:image'})
+
         # Extract all the values needed
-        user_data["name"] = script_data["name"]
-        user_data["insta_handle"] = script_data["alternateName"]
-        user_data["description"] = script_data["description"]
-        user_data["url"] = script_data["url"]
-        user_data["image"] = script_data["image"]
-        user_data["followers"] = meta_data[0]
-        user_data["following"] = meta_data[2]
-        user_data["posts"] = meta_data[4]
+        user_data = {"name": script_data["name"],
+                     "insta_handle": script_data["alternateName"],
+                     "description": script_data["description"],
+                     "url": script_data["url"],
+                     "image": image_data[0].get('content').replace("amp;", ""),
+                     "followers": meta_data[0],
+                     "following": meta_data[2],
+                     "posts": meta_data[4]}
         return user_data
 
     def main(self):
@@ -62,6 +64,8 @@ class InstaInfoScraper:
         # Storing the list in a json file
         with open('insta_data.json', 'w', encoding="utf-8") as outfile:
             json.dump(user_data_list, outfile, indent=4, sort_keys=True)
+
+        print('----------Extraction of data is complete. Check json file.----------')
 
 
 if __name__ == '__main__':

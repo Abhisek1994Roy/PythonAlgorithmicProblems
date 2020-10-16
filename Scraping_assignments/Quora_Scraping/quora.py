@@ -9,7 +9,8 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
-url = input('Enter Quora Url that you want to scrape')
+url = input('Enter the question that you want to find answers for-\n')
+url = "https://www.quora.com/"+url.replace(" ","-")
 # url = "https://www.quora.com/Should-I-move-to-London"
 
 # Hitting the Quora Url and extracting the HTML content

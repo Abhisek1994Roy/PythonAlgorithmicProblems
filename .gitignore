@@ -5,5 +5,8 @@ Scraping_assignments/Instagram-Data-Extractor/insta_cred.json
 *.json
 *.html
 *.png
+*.txt
+*.csv
 .DS_Store
 spotify_client_credentials.py
+__pycache__

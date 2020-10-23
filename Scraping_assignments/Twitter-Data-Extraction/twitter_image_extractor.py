@@ -19,9 +19,7 @@ auth.set_access_token(access_token, access_secret)
 #Creating tweepy api
 api = tweepy.API(auth)
 
-user = \
-    input("Enter twitter user_id - "
-          )
+user = input("Enter twitter user_id - ")
 
 #Getting all tweets
 all_tweets = api.user_timeline(screen_name=user, count=200,

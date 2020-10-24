@@ -54,8 +54,8 @@ def update_stats(candidate, data, stats, counter):
     return stats
 
 
-biden_data = pd.read_csv("JoeBiden_tweets.csv")
 trump_data = pd.read_csv("realDonaldTrump_tweets.csv")
+biden_data = pd.read_csv("JoeBiden_tweets.csv")
 
 with open('trump.json') as f: trump_sentiment_data = json.load(f)
 with open('biden.json') as g: biden_sentiment_data = json.load(g)
@@ -67,10 +67,10 @@ stats = update_stats("biden", biden_sentiment_data, stats, counter)
 
 # Create the labels and data set for creating the bar graph
 labels = ['Neutral', 'Positive', 'Negative', "Favorite Count", "Retweet Count"]
-trump_data = [stats["trump"]["neutral"] * 100, stats["trump"]["positive"] * 100, stats["trump"]["negative"] * 100,
-              round(trump_data["favorite_count"].mean()), round(trump_data["retweet_count"].mean())]
-biden_data = [stats["biden"]["neutral"] * 100, stats["biden"]["positive"] * 100, stats["biden"]["negative"] * 100,
-              round(biden_data["favorite_count"].mean()), round(biden_data["retweet_count"].mean())]
+trump_data = [int(stats["trump"]["neutral"]) , int(stats["trump"]["positive"]) ,int(stats["trump"]["negative"]) ,
+              int(trump_data["favorite_count"].mean()//100), int(trump_data["retweet_count"].mean()//100)]
+biden_data = [int(stats["biden"]["neutral"]) , int(stats["biden"]["positive"]) , int(stats["biden"]["negative"]) ,
+              int(biden_data["favorite_count"].mean()//100), int(biden_data["retweet_count"].mean()//100)]
 
 x = np.arange(len(labels))  # the label locations
 width = 0.35  # the width of the bars
@@ -87,17 +87,5 @@ ax.set_xticklabels(labels)
 ax.legend()
 
 
-def autolabel(rects):
-    for rect in rects:
-        height = rect.get_height()
-        ax.annotate('{}'.format(height),
-                    xy=(rect.get_x() + rect.get_width() / 2, height),
-                    xytext=(0, 3),  # 3 points vertical offset
-                    textcoords="offset points",
-                    ha='center', va='bottom')
-
-
-autolabel(rects1)
-autolabel(rects2)
 fig.tight_layout()
 plt.show()

@@ -1,8 +1,7 @@
 def sorted(arr):
     if len(arr) == 1:
         return
-    temp = arr[len(arr) - 1]
-    arr.pop()
+    temp = arr.pop()
     sorted(arr)
     insert(arr, temp)
     return arr
@@ -13,8 +12,8 @@ def insert(arr, temp):
         arr.append(temp)
         return
 
-    val = arr[len(arr) - 1]
-    arr.pop()
+    val = arr.pop()
+
     insert(arr, temp)
     arr.append(val)
 

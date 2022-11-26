@@ -8,6 +8,6 @@ def knapsack(wt, val, W):
 
 
 val = [60, 100, 120]
-wt = [10, 20, 30]
-W = 50
+wt = [1, 2, 3]
+W = 5
 print(knapsack(wt, val, W))
